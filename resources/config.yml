@@ -1,0 +1,13 @@
+---
+# データ保存に使用致しますデータフォーマットを指定致します。
+#指定致しました値は不正な場合、「json」を使用致します。
+# 対応致しましております、データフォーマット
+#json
+# dataformat: json
+
+#yaml
+# dataformat: yaml
+# dataformat: yml
+
+dataformat: json
+...
