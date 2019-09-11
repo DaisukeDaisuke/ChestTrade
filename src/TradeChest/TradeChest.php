@@ -11,7 +11,6 @@ use TradeChest\Provider\JsonProvider;
 
 use TradeChest\TradeChest;
 
-
 class TradeChest extends PluginBase{
 	//public $blocks = [];
 
@@ -25,16 +24,18 @@ class TradeChest extends PluginBase{
 		switch($config->get("dataformat")){
 			case "yaml":
 			case "yml":
-				$Provider = new YamlProvider($this->getDataFolder()."blocks.yml");
-				$ProviderName = "yaml";
+				//$Provider = new YamlProvider($this->getDataFolder()."blocks.yml");
+				$config = new Config($this->getDataFolder()."blocks.yml",Config::YAML);
+				$ConfigName = "yaml";
 			break;
 			case "json":
 			default:
-				$Provider = new JsonProvider($this->getDataFolder()."blocks.json");
-				$ProviderName = "json";
+				//$Provider = new JsonProvider($this->getDataFolder()."blocks.json");
+				$config = new Config($this->getDataFolder()."blocks.json",Config::JSON);
+				$ConfigName = "json";
 			break;
 		}
 		//$this->getLogger()->info("§eデータフォーマットを「".$ProviderName."」に指定致しました！");
-		$this->getServer()->getPluginManager()->registerEvents(new EventListener($Provider), $this);
+		$this->getServer()->getPluginManager()->registerEvents(new EventListener($config), $this);
 	}
 }

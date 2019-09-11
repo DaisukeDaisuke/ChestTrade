@@ -21,15 +21,17 @@ use TradeChest\Provider\Provider;
 use TradeChest\Provider\JsonProvider;
 use TradeChest\data\data;
 
+use pocketmine\utils\Config;
+
 class EventListener implements Listener{
 	public $data;
 	public $TradeChestAPI;
 
-	public function __construct(Provider $Provider){
-		$this->data = new data($Provider);
+	public function __construct(Config $Config){
+		$this->data = new data($Config);
 		$this->TradeChestAPI = new TradeChestAPI($this->data);
 	}
-	
+
 	public function playerBlockTouch(PlayerInteractEvent $event){
 		if($event->getBlock()->getID() == 68){
 			$player = $event->getPlayer();
@@ -78,11 +80,10 @@ class EventListener implements Listener{
 				if($sideblock->getId() !== 54){
 					continue;
 				}
-				if(!$this->data->hasRawdata($sideblock->asVector3(),$sideblock->getLevel()->getName())){
+
+				$signblock = TradeChestAPI::getTradeChestbyChest($sideblock);
+				if(!$this->data->hasRawdata($signblock->asVector3(),$signblock->getLevel()->getName())){
 					//物々交換ショップの内部データーは存在致しません。
-					continue;
-				}
-				if(!TradeChestAPI::isTradeChestByChest($sideblock)){
 					continue;
 				}
 				$player->sendMessage("§d[物々交換]物々交換ショップの近くにチェストを設置することは出来ません。");

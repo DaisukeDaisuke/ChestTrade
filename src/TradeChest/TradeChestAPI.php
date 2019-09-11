@@ -21,6 +21,8 @@ use TradeChest\Provider\JsonProvider;
 
 use TradeChest\TradeChest;
 
+use pocketmine\utils\Config;
+
 
 class TradeChestAPI{
 
@@ -156,7 +158,6 @@ class TradeChestAPI{
 			if($signblock->getId() !== 68){
 				continue;
 			}
-			//var_dump($signblock->getDamage());
 			if($signblock->getDamage() !== $damage){
 				continue;
 			}
@@ -165,25 +166,6 @@ class TradeChestAPI{
 			}
 		}
 		return null;
-	}
-
-	public static function isTradeChestByChest(Block $chestblock): bool{
-		$sides = [
-			Vector3::SIDE_WEST,
-			Vector3::SIDE_EAST,
-			Vector3::SIDE_NORTH,
-			Vector3::SIDE_SOUTH
-		];
-		foreach($sides as $side){
-			$signblock = $chestblock->getSide($side);
-			if($signblock->getId() !== 68){
-				continue;
-			}
-			if(self::isTradeChestBySign($signblock)){
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public static function isTradeChestBySign(Block $block,String $signlabel = "§b[物々交換]"): bool{
