@@ -14,11 +14,15 @@ use TradeChest\TradeChest;
 
 use TradeChest\type\decodeReturn;
 use TradeChest\TradeChestAPI;
-use TradeChest\Provider\Provider;
+
+use pocketmine\utils\Config;
+
 
 class data{
-	public function __construct(Provider $Provider){
-		$this->Provider = $Provider;
+	public $Config;
+
+	public function __construct(Config $config){
+		$this->Config = $config;
 	}
 
 	public function encodemini(item $beforeitem,item $afteritem,String $owner): string{
@@ -48,11 +52,11 @@ class data{
 	}
 
 	public function hasRawdata(Vector3 $vector3,string $levelname): bool{
-		return $this->Provider->exists(TradeChestAPI::getPositionHash($vector3,null,null,$levelname));
+		return $this->Config->exists(TradeChestAPI::getPositionHash($vector3,null,null,$levelname));
 	}
 
 	public function setRawdata(Vector3 $vector3,string $levelname,String $data): void{
-		$this->Provider->set(TradeChestAPI::getPositionHash($vector3,null,null,$levelname),$data);
+		$this->Config->set(TradeChestAPI::getPositionHash($vector3,null,null,$levelname),$data);
 		$this->save();
 	}
 
@@ -60,14 +64,14 @@ class data{
 		if(!$this->hasRawdata($vector3,$levelname)){
 			return null;
 		}
-		return $this->Provider->get(TradeChestAPI::getPositionHash($vector3,null,null,$levelname));
+		return $this->Config->get(TradeChestAPI::getPositionHash($vector3,null,null,$levelname));
 	}
 
 	public function deleteRawdata(Vector3 $vector3,string $levelname): bool{
 		if(!$this->hasRawdata($vector3,$levelname)){
 			return false;
 		}
-		$this->Provider->delete(TradeChestAPI::getPositionHash($vector3,null,null,$levelname));
+		$this->Config->remove(TradeChestAPI::getPositionHash($vector3,null,null,$levelname));
 		$this->save();
 		return true;
 	}
@@ -84,6 +88,6 @@ class data{
 	}
 
 	public function save(){
-		$this->Provider->save();
+		$this->Config->save();
 	}
 }
